@@ -37,18 +37,14 @@ def get_prompt(user_prompt:str):
     return prompt
 
 class Agent:
-    def __init__(self, success_sc, failure_sc, collection, client=OpenAI(), max_iter=3) -> None:
-        self.success_sc = success_sc
-        self.failure_sc = failure_sc
-        self.collection = collection
+    def __init__(self,, client=OpenAI(), max_iter=3) -> None:
         self.max_iter = max_iter
         self.client = client
         self.token_count = 0
     def initial_answer(self)->str:
         prompt_qa = """"you are a software architecture expert, you must create a diagram following the next indications {user_input}"
              f"using the ""diagrams"" python package, the code should be runnable"""
-        initial_completion = DBvector(name=self.collection).conn_db(prompt=prompt_qa, operation=")r")["message"]
-        #self.token_count += task.get_token_count(initial_completion)
+
         return initial_completion
 
     def revise_response(self, initial_message):
