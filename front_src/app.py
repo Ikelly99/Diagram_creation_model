@@ -1,5 +1,8 @@
 import streamlit as st 
 from PIL import Image
+import requests
+from io import BytesIO
+
 
 st.title("Lorem ipsum dolor sit amet")
 
@@ -18,9 +21,14 @@ with col1:
 
 with col2:
     if buttom_check and option == 'AWS':
-        image1 = Image.open("C:/Users/rlagunaj/Desktop/FRONT/Entorno/src/paper_plane.jpg")
+        
+        url= "https://github.com/Ikelly99/Diagram_creation_model/blob/main/front_src/paper_plane.jpg"
+        
+        response = requests.get(url, verify=False)
+        
+        image = Image.open(BytesIO(response.content))
 
-        st.image(image1, caption="A little plane thinking big.")
+        st.image(image, caption="A little paper plane thinking big.")
 
         txt = st.text_area(
             "Analysis:",
@@ -31,9 +39,13 @@ with col2:
             Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet""")
         
     elif buttom_check and option == 'GCP':
-        image1 = Image.open("C:/Users/rlagunaj/Desktop/FRONT/Entorno/src/paper_planes.jpg")
+        url = "https://github.com/Ikelly99/Diagram_creation_model/blob/main/front_src/paper_planes.jpg"
+        
+        response = requests.get(url)
+        
+        image = Image.open(BytesIO(response.content))
 
-        st.image(image1, caption="Some paper planes flying")
+        st.image(image, caption="Some paper planes flying")
 
         txt = st.text_area(
             "Analysis:",
@@ -44,9 +56,13 @@ with col2:
             Lorem ipsum dolor sit amet lorem ipsum dolor sit amet lorem ipsum dolor sit amet""")
         
     elif buttom_check and option == 'Azure':
-        image1 = Image.open("C:/Users/rlagunaj/Desktop/FRONT/Entorno/src/a_lot_of_paper_planes.jpg")
+        url = "https://github.com/Ikelly99/Diagram_creation_model/blob/main/front_src/a_lot_of_paper_planes.jpg"
+        
+        response = requests.get(url)
+        
+        image = Image.open(BytesIO(response.content))
 
-        st.image(image1, caption="A lot of paper planes")
+        st.image(image, caption="A lot of paper planes")
 
         txt = st.text_area(
             "Analysis:",
