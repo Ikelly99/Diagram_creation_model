@@ -34,6 +34,9 @@ class Response_diagram(BaseModel):
     explanation: Optional[str] = Field(..., description="Explanation of the Diagram architecture generated")
     service_connections: Optional[str] = Field(..., description="Explanation of the connections between the hyperscaler services")
 
+class Response_diagram_improvements(BaseModel):
+
+
 class LLM_Diagram:
     def __init__(self, question):
         self.question = question
@@ -49,6 +52,18 @@ class LLM_Diagram:
         diagram_answer = chain.invoke({"question": template, "user_input": self.question})
         return diagram_answer.arch_requisites, diagram_answer.python_diagram_runnable, diagram_answer.explanation
 
+    def diagram_improve_response(self):
+        template = """you are a software architecture expert, you are given python code to generate a diagram 
+        f"using the ""diagrams"" python package, the code should be runnable, and comply with the client expectations, 
+        revise that the code is runnable, the description is accurate and the client needs are met"""
+
+        apikey = os.getenv("OPENAI_API_KEY")
+        prompt = ChatPromptTemplate.from_messages([("system", template,), ("human", "Question: {question}"), ])
+        llm = ChatOpenAI(openai_api_key=apikey, model= "gpt-4o", temperature=0)
+        chain = prompt | llm.with_structured_output(schema=Response_diagram_improvements)
+        print(self.question)
+        diagram_answer = chain.invoke({"question": template, "user_input": self.question})
+        return diagram_answer.arch_requisites, diagram_answer.python_diagram_runnable, diagram_answer.explanation
 
 user_input_example = """A user accesses the web application via the Load Balancer (ELB).
 The load balancer distributes incoming traffic among a cluster of EC2 Web Servers.
