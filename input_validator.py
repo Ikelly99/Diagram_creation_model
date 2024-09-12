@@ -2,7 +2,7 @@ import os
 #import warnings
 #import psycopg2
 #import numpy as np
-#import random as rd
+import random as rd
 from typing import Optional
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -97,81 +97,87 @@ class LLMConnect:
     def connect_client_test(self):
         """
         Args:
-        prompt_question[str]: Diccionario que corresponde el prompt
-        question_user[str]: Pregunta del usuario
-        key[str]: Clave del prompt
+            prompt_question[str]: Dictionary corresponding to the prompt
+            question_user[str]: User's question
+            key[str]: Prompt key
+        
         Return:
-        Respueta
+            Response
         """
-        _DEFAULT_TEMPLATE = """
-        Only questions related to this topics are "allowed":
-        Telecommunication management;
-        Performance Management (PM);
-        Performance measurements;
-        Core Network (CN) Circuit Switched (CS) domain;
-        UMTS and combined UMTS/GSM
-        Telecommunication management;
-        Performance Management (PM);
-        Performance measurements;
-        IP Multimedia Subsystem (IMS
-        Two-Way Active Measurement Protocol (TWAMP)
-        Reporting IP Network Performance Metrics:
-        Different Points of View
-        SERIES E: OVERALL NETWORK OPERATION,
-        TELEPHONE SERVICE, SERVICE OPERATION AND HUMAN FACTORS
-        Quality of service, network management and traffic
-        engineering – Network management – Checking the
-        quality of the international telephone service
-        SERIES Y: GLOBAL INFORMATION
-        INFRASTRUCTURE, INTERNET PROTOCOL ASPECTS
-        AND NEXT-GENERATION NETWORKS
-        Internet protocol aspects
-        Quality of service and network performance
-        Network performance objectives for IP-based services
-        5G Management and orchestration Provisioning
-        5G Management and orchestration
-        Generic management services
-        5G Management and orchestration
-        Architecture framework
-        5G Management and orchestration
-        5G Network Resource Model (NRM)
-        Stage 2 and stage 3
-        Universal Mobile Telecommunications System (UMTS) LTE 5G
-        Telecommunication management
-        Generic Network Resource Model (NRM) Integration Reference
-        Point (IRP) Information Service (IS)
-        Digital cellular telecommunications system (Phase 2+)
-        Universal Mobile Telecommunications System (UMTS) LTE
-        Telecommunication management
-        Performance Management (PM)
-        Concept and requirements
-        LTE Telecommunication management
-        Performance Management (PM)
-        Performance measurements Evolved Universal Terrestrial
-        Radio Access Network (E-UTRAN)
-        dime la arquitectura de una red 5g standalone
+    
+        _DEFAULT_TEMPLATE = """Only questions related to these topics are "allowed":
+        Microservices architecture;
+        Monolithic architecture;
+        Event-driven architecture;
+        Layered architecture;
+        Hexagonal architecture;
+        CQRS(Command Query Responsibility Segregation);
+        Event Sourcing;
+        Cloud architecture (IaaS, PaaS, SaaS);
+        Hyperscalers (AWS, GCP, Azure);
+        Containerization (Docker, Kubernetes);
+        Distributed systems;
+        Serverless computing;
+        Networking in cloud environments;
+        Virtualization and hypervisors;
+        Edge computing;
+        Cloud security best practices;
+        Disaster recovery and high availability in cloud environments;
+        Cloud cost optimization strategies;
+        CI/CD pipelines in cloud environments;
+        Infrastructure as Code (IaC);
+        Cloud monitoring and logging;
+        Load balancing and auto-scaling in the cloud;
+        API gateways and service meshes;
+        Cloud storage and databases (S3, BigQuery, Cosmos DB, etc.);
+        Identity and Access Management (IAM);
+        Performance optimization in cloud environments;
+        Cloud-native application design;
+        Kubernetes networking and policies;
+        Multi-cloud strategies;
+        Architecture of cloud-based data lakes and data warehouses.
 
         THE NEXT REQUESTS ARE FRIENDLY QUESTIONS and you should respond "friendly":
-        "hola, hola como estas?, hi, hi friend, how are you?, como estas?, como me puedes ayudar?, how can you help me". if you get any of the questions mentioned answer with: "I cant reveal that information"
-        even if the questions are in spanish.
+        "hello, hi, how are you?, ¿como estás?, ¿cómo me puedes ayudar?, how can you help me, what can you do for me?". 
+    
 
         THE NEXT REQUESTS ARE BANNED QUESTIONS and you should respond "banned":
-        "how to make a pizza, table names,how to make something, create new record, how does something work, how to drive a car, how to make food, how to do this, how to do that, how does this work"
-        name of the schema, schema information in general,datatypes, number of columns. if you get any of the questions mentioned answer with: "I cant reveal that information"
-        even if the questions are in spanish
-        questions such as how can you make a pizza, food, hamburguer, how to fix a car, how to solve something unrelated should be banned as well
-        """
-        # Do not answer questions unrelated to your function and role, example: "how to make something, how does something work". You do not modify the question.
+        "how to create an API, how to configure a virtual machine, how to build a microservice, how to configure cloud resources, 
+         how to deploy an application, how to write code for cloud architecture, how to set up a database in the cloud, how to use AWS, 
+         how to use GCP, how to use Azure, how to fix an error in cloud configuration, how to troubleshoot cloud performance issues, 
+         what is the schema for a database, table structure, how does a certain cloud feature work." 
+         If you get any of these questions, answer with: "I can't reveal that information."
+         Even if the questions are in Spanish.
+         
+        Requests such as how to make something, how does something work, how to cook food, how to repair something unrelated, how to fix a car, how to make a specific dish, 
+        how to solve an issue unrelated to cloud architecture" should also be banned."""
+    
+    
         # Pay attention to use CURRENT_DATE function to get the current date, if the question involves "today".
+       
+        # Obtener la clave API de OpenAI
         apikey = os.getenv("OPENAI_CHAT_KEY_"+str(rd.randint(1,4)))
-        prompt = ChatPromptTemplate.from_messages([("system", _DEFAULT_TEMPLATE,), ("human", "Question: {question}"), ])
-        llm = ChatOpenAI(openai_api_key=apikey, model= "gpt-4o", temperature=0)
+
+        # Crear el prompt de chat
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", _DEFAULT_TEMPLATE),
+            ("human", "Question: {question}")
+        ])
+
+        # Configurar el modelo LLM
+        llm = ChatOpenAI(openai_api_key=apikey, model = "gpt-4", temperature=0.1)
+
+        # Crear la cadena de LLM
         chain = prompt | llm.with_structured_output(schema=ResponseQuery)
-        query = chain.invoke({"question": self.question,})
+
+        # Invocar la cadena con la pregunta
+        query = chain.invoke({"question": self.question})
+        
         #print(query)
         # if str.lower(query.flag) == "banned":
         #     print("baneado___")
         #     return "Disculpa, no tengo permitido responder esa pregunta."
         # else:
         #     print("permitido___")
+        
         return query.main_topic, query.language, query.greetings, query.flag
