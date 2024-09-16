@@ -56,7 +56,7 @@ class LLMConnect:
             ])
         
         # Get the OpenAI API key
-        apikey = getkey.get_key_openai("OPENAI_CHAT_KEY_")
+        apikey = getkey.get_key_openai("OPENAI_API_KEY")
         
         # Initialize the ChatOpenAI model with the API key and specified model
         llm = ChatOpenAI(openai_api_key=os.getenv(apikey), model= "gpt-4o", temperature=0)
