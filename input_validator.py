@@ -169,7 +169,7 @@ class LLMConnect:
 
 
         # Obtener la clave API de OpenAI
-        apikey = os.getenv("OPENAI_CHAT_KEY_"+str(rd.randint(1,4)))
+        apikey = os.getenv("OPENAI_CHAT_KEY")
 
         # Crear el prompt de chat
         prompt = ChatPromptTemplate.from_messages([
@@ -178,7 +178,7 @@ class LLMConnect:
         ])
 
         # Configurar el modelo LLM
-        llm = ChatOpenAI(openai_api_key=apikey, model = "gpt-4", temperature=0.1)
+        llm = ChatOpenAI(openai_api_key=apikey, model = "gpt-4o", temperature=0.1)
 
         # Crear la cadena de LLM
         chain = prompt | llm.with_structured_output(schema=ResponseQuery)
