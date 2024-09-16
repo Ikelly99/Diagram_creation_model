@@ -26,14 +26,7 @@ from langchain_core.messages import AIMessage, BaseMessage, HumanMessage, ToolMe
 load_dotenv()
 
 # Set environment variables for OpenAI and Azure OpenAI
-os.environ["OPENAI_API_TYPE"] = "azure"
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_KEY")
-os.environ["AZURE_OPENAI_SERVICE"] = os.getenv("AZURE_OPENAI_SERVICE")
-os.environ["AZURE_OPENAI_API_KEY"] = os.getenv("AZURE_OPENAI_KEY")
-os.environ["OPENAI_API_VERSION"] = os.getenv("AZURE_OPENAI_VERSION")
-os.environ["AZURE_OPENAI_GPT_DEPLOYMENT"] = os.getenv("AZURE_OPENAI_GPT_DEPLOYMENT")
-os.environ["AZURE_OPENAI_ENDPOINT"] = os.getenv("AZURE_OPENAI_ENDPOINT")
-os.environ["azure_deployment"] = os.getenv("AZURE_OPENAI_EMB_DEPLOYMENT")
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 def get_prompt(user_prompt:str):
     """
