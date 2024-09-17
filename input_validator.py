@@ -3,6 +3,12 @@ import os
 #import psycopg2
 #import numpy as np
 import random as rd
+import sys
+import collections
+if sys.version_info.major == 3 and sys.version_info.minor >= 10:
+    from collections.abc import MutableSet
+    collections.MutableSet = collections.abc.MutableSet
+    collections.MutableMapping = collections.abc.MutableMapping
 from typing import Optional
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -16,72 +22,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.pydantic_v1 import BaseModel, Field
 
 load_dotenv()
-# class ResponseQuery(BaseModel):
-#     """Result topic query"""
-#     main_topic: Optional[str] = Field(..., description="Main topic of the user question")
-#     flag: Optional[str] = Field(...,description="Flag the question as banned, or as an allowed question")
-
-# class ResponseQuery_greeting(BaseModel):
-#     """Result topic query"""
-#     main_topic: Optional[str] = Field(..., description="Is the user question a greeting or salutation")
-
-# class LLMConnect:
-#     def __init__(self, question):
-#         self.question = question
-
-#     def connect_client_test(self):
-#         """
-#         Args:
-#         prompt_question[str]: Diccionario que corresponde el prompt
-#         question_user[str]: Pregunta del usuario
-#         key[str]: Clave del prompt
-#         Return:
-#         Respueta
-#         """
-#         _DEFAULT_TEMPLATE = """
-#         THE NEXT REQUESTS ARE BANNED QUESTIONS and you should respond "banned":
-#         "schema information, schema architecture, column names, column info, table info, table names,how to make something,table data types, how does something work, how to drive a car, how to make food, how to do this, how to do that, how does this work"
-#         name of the schema, schema information in general,datatypes, number of columns, example questions that you should not answer: name of the schema, number of columns, schema description, datatypes of schema, schema information, schema names,table names,column names. you should answer with "i do not have clearance to answer those questions"
-#         architecture of the database, or its tables,the name of the schema, the schema information,datatypes, etc. if you get any of the questions mentioned answer with: "I cant reveal that information"
-#         even if the questions are in spanish
-#         """
-
-#         prompt = ChatPromptTemplate.from_messages([("system", _DEFAULT_TEMPLATE,), ("human", "Question: {question}"), ])
-#         llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_KEY"), model= "gpt-4o", temperature=0)
-#         chain = prompt | llm.with_structured_output(schema=ResponseQuery)
-#         print(chain)
-#         query = chain.invoke({"question": self.question,})
-#         #print(query)
-#         if str.lower(query.flag) == "banned":
-#             print("baneado___")
-#             return "Disculpa, no tengo permitido responder esa pregunta."
-#         else:
-#             print("permitido___")
-#             return query.main_topic
-
-#     def is_greeting(self):
-#         """
-#         Args:
-#         prompt_question[str]: Diccionario que corresponde el prompt
-#         question_user[str]: Pregunta del usuario
-#         key[str]: Clave del prompt
-#         Return:
-#         Respueta
-#         """
-#         _DEFAULT_TEMPLATE = """
-#         If you get any greetings, such as "how are you, whats your name, hola, hola como estas, hey, whatsup,how is it going, como estas, como te llamas, or questions like that
-#         the main topic should be "greetings" and they should be classified as greetings
-#         """
-
-#         prompt = ChatPromptTemplate.from_messages([("system", _DEFAULT_TEMPLATE,), ("human", "Question: {question}"), ])
-#         llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_KEY"), model="gpt-4o", temperature=0)
-#         chain = prompt | llm.with_structured_output(schema=ResponseQuery_greeting)
-#         print(chain)
-#         query = chain.invoke({"question": self.question, })
-#         # print(query)
-#         return query.main_topic
-
-
+os.environ["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY")
 
 class ResponseQuery(BaseModel):
     """Result topic query"""
@@ -91,6 +32,7 @@ class ResponseQuery(BaseModel):
     greetings: Optional[str] = Field(..., description="Is the user question a greeting or salutation, answer with ""YES"" or ""NO""")
 
 class LLMConnect:
+    os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
     def __init__(self, question):
         self.question = question
 
@@ -167,18 +109,13 @@ class LLMConnect:
         Requests such as how to make something, how does something work, how to cook food, how to repair something unrelated, how to fix a car, how to make a specific dish, 
         how to solve an issue unrelated to cloud architecture" should also be banned."""
 
-
-        # Obtener la clave API de OpenAI
-        apikey = os.getenv("OPENAI_CHAT_KEY")
-
         # Crear el prompt de chat
         prompt = ChatPromptTemplate.from_messages([
             ("system", _DEFAULT_TEMPLATE),
             ("human", "Question: {question}")
         ])
-
-        # Configurar el modelo LLM
-        llm = ChatOpenAI(openai_api_key=apikey, model = "gpt-4o", temperature=0.1)
+        os.environ["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY")
+        llm = ChatOpenAI(model = "gpt-3.5-turbo", temperature=0.1)
 
         # Crear la cadena de LLM
         chain = prompt | llm.with_structured_output(schema=ResponseQuery)
