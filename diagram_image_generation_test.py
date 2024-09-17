@@ -1,20 +1,20 @@
 import os
-
 os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz/bin/'
+
 def run_code_and_return_image(code: str, image_name: str = "diagram"):
     # Save the generated code to a temporary file
     temp_code_file = "generated_code.py"
     with open(temp_code_file, "w") as f:
         f.write(code)
-
     # Execute the code that generates the diagram
     try:
-        exec(open(temp_code_file).read())
+        gen_code = open(temp_code_file).read()
+        exec(gen_code)
     except Exception as e:
         return f"Error in code execution: {e}"
+
     os.remove(temp_code_file)
     image_path = f"{image_name}.png"
-
     if os.path.exists(image_path):
         return f"Image saved successfully at: {os.path.abspath(image_path)}"
     else:
@@ -50,7 +50,7 @@ from diagrams.aws.security import IAM
 from diagrams.aws.management import Cloudwatch
 from diagrams.onprem.client import User
 
-with Diagram("Complex Web Architecture", show=True, filename="complex_architecture"):
+with Diagram("Complex Web Architecture", show=True, filename="complex_architecture_1"):
 
     # Internet-facing components
     dns = Route53("DNS")
@@ -123,5 +123,5 @@ with Diagram("Complex Web Architecture", show=True, filename="complex_architectu
         svc >> monitoring
         svc >> tracing
 """
-image_result = run_code_and_return_image(generated_code, "simple_web_service_diagram")
+image_result = run_code_and_return_image(generated_code_1, "complex_architecture_1")
 print(image_result)

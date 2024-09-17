@@ -33,8 +33,14 @@ class Response_diagram(BaseModel):
     python_diagram_runnable: Optional[str] = Field(...,description="the diagram architecture made into runnable code made with the python ""diagram"" package")
     explanation: Optional[str] = Field(..., description="Explanation of the Diagram architecture generated")
     service_connections: Optional[str] = Field(..., description="Explanation of the connections between the hyperscaler services")
+    image_file_name: Optional[str] = Field(..., description="image filename, specified in the code")
 
 class Response_diagram_improvements(BaseModel):
+    arch_requisites: Optional[str] = Field(..., description="technical requistions for the architecture")
+    #language: Optional[str] = Field(..., description="The language in which the user input was written, either ""ENGLISH"" or ""SPANISH""")
+    python_diagram_runnable: Optional[str] = Field(...,description="the diagram architecture made into runnable code made with the python ""diagram"" package")
+    explanation: Optional[str] = Field(..., description="Explanation of the Diagram architecture generated")
+    service_connections: Optional[str] = Field(..., description="Explanation of the connections between the hyperscaler services")
 
 
 class LLM_Diagram:
@@ -50,7 +56,11 @@ class LLM_Diagram:
         chain = prompt | llm.with_structured_output(schema=Response_diagram)
         print(self.question)
         diagram_answer = chain.invoke({"question": template, "user_input": self.question})
-        return diagram_answer.arch_requisites, diagram_answer.python_diagram_runnable, diagram_answer.explanation
+        return (diagram_answer.arch_requisites,
+                diagram_answer.python_diagram_runnable,
+                diagram_answer.explanation,
+                diagram_answer.service_connections,
+                diagram_answer.image_file_name)
 
     def diagram_improve_response(self):
         template = """you are a software architecture expert, you are given python code to generate a diagram 
@@ -63,15 +73,15 @@ class LLM_Diagram:
         chain = prompt | llm.with_structured_output(schema=Response_diagram_improvements)
         print(self.question)
         diagram_answer = chain.invoke({"question": template, "user_input": self.question})
-        return diagram_answer.arch_requisites, diagram_answer.python_diagram_runnable, diagram_answer.explanation
+        return diagram_answer.arch_requisites, diagram_answer.python_diagram_runnable, diagram_answer.explanation, diagram_answer.improvements, diagram_answer.service_connections
 
-user_input_example = """A user accesses the web application via the Load Balancer (ELB).
-The load balancer distributes incoming traffic among a cluster of EC2 Web Servers.
-The web servers interact with a relational database (RDS) to retrieve and store data.
-The web servers also use S3 for storing files."""
+#user_input_example = """A user accesses the web application via the Load Balancer (ELB).
+#The load balancer distributes incoming traffic among a cluster of EC2 Web Servers.
+#The web servers interact with a relational database (RDS) to retrieve and store data.
+#The web servers also use S3 for storing files."""
 
-answer = LLM_Diagram(user_input_example).diagram_first_answer()
-print(answer)
+#answer = LLM_Diagram(user_input_example).diagram_first_answer()
+#print(answer)
 
 
 

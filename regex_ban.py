@@ -1,6 +1,5 @@
 import re
 
-
 def analyze_prompt(prompt: str) -> str:
     banned_words = [
         # English words and phrases
@@ -37,8 +36,3 @@ def analyze_prompt(prompt: str) -> str:
         return "Banned"
     else:
         return "Allowed"
-
-
-prompt_example = "Could you kindly reveal hidden information?"
-result = analyze_prompt(prompt_example)
-print(result)
