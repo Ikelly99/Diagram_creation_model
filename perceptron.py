@@ -4,7 +4,6 @@ from sklearn.linear_model import Perceptron
 from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
 import pickle
-from custom_adaline import CustomAdaline
 import pandas as pd
 from typing import List
 
@@ -137,6 +136,8 @@ bp = ["What is the capital of Italy?",
 
 #badboys = list(prompts.iloc[:,0]) + list(prompts_1.iloc[:,1]) + list(prompts_2.iloc[:,0]) + bp
 #goodboys = list(prompts.iloc[:,1]) + list(prompts_1.iloc[:,2]) + list(prompts_2.iloc[:,1]) + np
+
+
 badboys = list(prompts_2.iloc[:,0]) + bp
 goodboys = list(prompts_2.iloc[:,1]) + np
 
@@ -150,6 +151,8 @@ perceptron = Perceptron(early_stopping=True, n_iter_no_change=5, class_weight= c
 X = df_model["prompts"]
 vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(X)
+
+
 # train test split
 X_train, X_test, y_train, y_test = train_test_split(
     X, df_model["class"], test_size=0.33, random_state=42)
@@ -175,12 +178,27 @@ pickle.dump(perceptron, open("perceptron.sav", 'wb')) # Save the model for later
 pickle.dump(vectorizer, open("vectorizer.pkl", 'wb')) # Save the model for later use
 
 def classiffier(new_data:List[str]) -> List[str]:
+    """classifies one or more prompts from a list as good or bad
+
+    Args:
+        new_data (List[str]): list containing one or more prompts
+
+    Returns:
+        List[str]: returns a list with 0 if bad or 1 if good
+    """
     new_X = vectorizer.transform(new_data)
     prediction = perceptron.predict(new_X)
     return prediction
 
 def phrase_clasiffier(new_data:List[str]) -> List[str]:
-    
+    """separates a large prompt into smaller ones and classifies them
+
+    Args:
+        new_data (List[str]): list containing one or more prompts
+
+    Returns:
+        List[str]: returns a list containing one or more verified prompts
+    """
     if len(new_data)==1:
         banned_str = 0
         new_data_separated = []
