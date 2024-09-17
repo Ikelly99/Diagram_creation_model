@@ -17,12 +17,7 @@ with col1:
         
         st.write("You selected:", option)
         
-        text_input = st.text_input(
-        "Enter the required specifications",
-        label_visibility=st.session_state.visibility,
-        disabled=st.session_state.disabled,
-        placeholder=st.session_state.placeholder,
-    )
+        text_input = st.text_input("Enter the required specifications",)
         
         buttom_check = st.form_submit_button(label="Submit")
 
