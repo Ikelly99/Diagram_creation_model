@@ -123,5 +123,5 @@ with Diagram("Complex Web Architecture", show=True, filename="complex_architectu
         svc >> monitoring
         svc >> tracing
 """
-image_result = run_code_and_return_image(generated_code_1, "complex_architecture_1")
-print(image_result)
+#image_result = run_code_and_return_image(generated_code_1, "complex_architecture_1")
+#print(image_result)

@@ -7,7 +7,7 @@ from class_model_diagram import LLM_Diagram
 from diagram_image_generation_test import run_code_and_return_image
 from regex_ban import analyze_prompt
 st.title("Lorem ipsum dolor sit amet")
-from perceptron import *
+from perceptron import classiffier, phrase_clasiffier
 
 col1, col2 = st.columns(2)
 
@@ -27,22 +27,25 @@ with col2:
     if buttom_check and option == 'AWS' and text_input:
         option_message = f", using only {option} services"
         text_input = text_input + option_message
-        cla = phrase_clasiffier(text_input)
-        if analyze_prompt(text_input) == "Allowed" and cla==1:
+        # perceptron layer
+        cla = classiffier([text_input])
+        if analyze_prompt(text_input) == "Allowed" and cla == 1:
             topic, language, is_greeting, allowed = LLMConnect(text_input).connect_client_test()
             if allowed == "allowed":
                 arch_requisites, python_diagram_runnable, explanation, service_connections, image_file_name = LLM_Diagram(
                     text_input).diagram_first_answer()
                 print(python_diagram_runnable)
                 run_code_and_return_image(python_diagram_runnable, image_file_name)
+                image_path = str(image_file_name) + ".png"
                 message = "explanation: " + explanation + "\n Service connnections: " + service_connections + "\n Architecture requisites: " + arch_requisites
+                image = Image.open(image_path)
+                st.image(image, caption=image_path)
             else:
-                message = " Your message was flagged as malicious"
+                message = f" Your message was flagged as malicious: {cla}"
+                #image_path = "https://wallpapercave.com/wp/wp2336511.jpg"
         else:
-            message = "Your message was flagged as malicious"
-        image_path = str(image_file_name) + ".png"
-        image = Image.open(image_path)
-        st.image(image, caption=image_path)
+            message = f"Your message was flagged as malicious: {cla}"
+            #image_path = "https://wallpapercave.com/wp/wp2336511.jpg"
         txt = st.text_area(message)
         
     elif buttom_check and option == 'GCP' and text_input:
