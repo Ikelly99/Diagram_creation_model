@@ -190,7 +190,7 @@ def classiffier(new_data:List[str]) -> List[str]:
     prediction = perceptron.predict(new_X)
     return prediction
 
-def phrase_clasiffier(new_data:List[str]) -> List[str]:
+def phrase_clasiffier(new_data:List[str]) -> int:
     """separates a large prompt into smaller ones and classifies them
 
     Args:
@@ -216,9 +216,9 @@ def phrase_clasiffier(new_data:List[str]) -> List[str]:
                 banned_str +=1
 
         if banned_str > 0:
-            return ["A malicious message was found in your instruction"]
+            return 0
 
-        return [new_chain]
+        return 1
    
     else:
         new_chains = []

@@ -7,6 +7,7 @@ from class_model_diagram import LLM_Diagram
 from diagram_image_generation_test import run_code_and_return_image
 from regex_ban import analyze_prompt
 st.title("Lorem ipsum dolor sit amet")
+from perceptron import *
 
 col1, col2 = st.columns(2)
 
@@ -26,7 +27,8 @@ with col2:
     if buttom_check and option == 'AWS' and text_input:
         option_message = f", using only {option} services"
         text_input = text_input + option_message
-        if analyze_prompt(text_input) == "Allowed":
+        cla = phrase_clasiffier(text_input)
+        if analyze_prompt(text_input) == "Allowed" and cla==1:
             topic, language, is_greeting, allowed = LLMConnect(text_input).connect_client_test()
             if allowed == "allowed":
                 arch_requisites, python_diagram_runnable, explanation, service_connections, image_file_name = LLM_Diagram(
