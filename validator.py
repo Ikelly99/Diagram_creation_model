@@ -1,5 +1,9 @@
 import os
 import source.utils as getkey
+if sys.version_info.major == 3 and sys.version_info.minor >= 10:
+    from collections.abc import MutableSet
+    collections.MutableSet = collections.abc.MutableSet
+    collections.MutableMapping = collections.abc.MutableMapping
 from typing import Optional
 from dotenv import load_dotenv
 from source.template_prompt import TEMPLATE_CLASSIFICATION
@@ -7,6 +11,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_core.output_parsers import StrOutputParser
+
 
 load_dotenv()
 
