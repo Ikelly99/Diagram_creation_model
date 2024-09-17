@@ -48,7 +48,8 @@ with col2:
     elif buttom_check and option == 'GCP' and text_input:
         option_message = f", using only {option} services"
         text_input = text_input + option_message
-        if analyze_prompt(text_input) == "Allowed":
+        cla = phrase_clasiffier(text_input)
+        if analyze_prompt(text_input) == "Allowed" and cla==1:
             topic, language, is_greeting, allowed = LLMConnect(text_input).connect_client_test()
             if allowed == "allowed":
                 arch_requisites, python_diagram_runnable, explanation, service_connections, image_file_name = LLM_Diagram(
@@ -68,7 +69,8 @@ with col2:
     elif buttom_check and option == 'Azure' and text_input:
         option_message = f", using only {option} services"
         text_input = text_input + option_message
-        if analyze_prompt(text_input) == "Allowed":
+        cla = phrase_clasiffier(text_input)
+        if analyze_prompt(text_input) == "Allowed" and cla==1:
             topic, language, is_greeting, allowed = LLMConnect(text_input).connect_client_test()
             if allowed == "allowed":
                 arch_requisites, python_diagram_runnable, explanation, service_connections, image_file_name = LLM_Diagram(
