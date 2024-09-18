@@ -41,6 +41,28 @@ with col1:
             st.success("Saved File")
 
 
-with col2:
+with ((col2)):
     if buttom_check and text_input:
-        st.write(text_out)
+        cla = classiffier([text_input])
+        if analyze_prompt(text_input) == "Allowed" and cla == 1:
+            topic, language, is_greeting, allowed = LLMConnect(text_input).connect_client_test()
+            if allowed == "allowed":
+                components,service_connections,explanation,is_viable,Advantages_disadvantages = LLM_DiagramAnalyzer(
+                    os.path.join("uploaded_images", image_input.name), text_input).diagram_analysis()
+                text_out = f"""
+                            ### Components
+                            {components}
+                            
+                            ### Service connections
+                            {service_connections}
+                            
+                            ### Explanation
+                            {explanation}
+                            
+                            ### Is viable
+                            {is_viable}
+                            
+                            ### Advantages_disadvantages
+                            {Advantages_disadvantages}
+                            """
+        st.markdown(text_out)
