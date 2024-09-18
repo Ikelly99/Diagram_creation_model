@@ -30,7 +30,7 @@ class Response_diagram(BaseModel):
     """Result topic query"""
     arch_requisites: Optional[str] = Field(..., description="technical requistions for the architecture")
     #language: Optional[str] = Field(..., description="The language in which the user input was written, either ""ENGLISH"" or ""SPANISH""")
-    python_diagram_runnable: Optional[str] = Field(...,description="the diagram architecture made into runnable code made with the python ""diagram"" package, using non deprecated and up to date functions")
+    python_diagram_runnable: Optional[str] = Field(...,description="the diagram architecture made into runnable code made with the python ""diagram"" package")
     explanation: Optional[str] = Field(..., description="Explanation of the Diagram architecture generated")
     service_connections: Optional[str] = Field(..., description="Explanation of the connections between the hyperscaler services")
     image_file_name: Optional[str] = Field(..., description="image filename, specified in the code")
@@ -48,7 +48,7 @@ class LLM_Diagram:
         self.question = question
     def diagram_first_answer(self):
         template = """you are a software architecture expert, you must create a diagram following the next indications {user_input}"
-             f"using the ""diagrams"" python package, the code should be runnable"""
+             f"using the ""diagrams"" python package, the code should be runnable, correctly write the names and illustrations of the components in the generated code"""
 
         apikey = os.getenv("OPENAI_API_KEY")
         prompt = ChatPromptTemplate.from_messages([("system", template,), ("human", "Question: {question}"), ])
