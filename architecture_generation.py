@@ -10,19 +10,24 @@ from perceptron import classiffier
 
 
 #st.title("Architecture generation")
+st.set_page_config(
+    page_title="Codd",
+    page_icon="🧊",
+    layout="wide",
+    initial_sidebar_state="collapsed")
 
 global text_out
 
 text_out = ""
 
-col1, col2 = st.columns([3.33,6.66])
+col1, col2 = st.columns([1,1])
 
 with col1:
     #with st.container():
     with st.form("Space_1"):
         option = st.selectbox("Select a cloud platform:" , ("AWS", "GCP", "Azure"))
         st.write("You selected:", option)
-        text_input = st.text_area(label="Enter the specifications")
+        text_input = st.text_area(label="Enter the specifications", height=60)
         buttom_check = st.form_submit_button(label="Submit")
 
 with col2:
@@ -109,7 +114,7 @@ with col2:
                 run_code_and_return_image(python_diagram_runnable, image_file_name)
 
                 image_path = str(image_file_name) + ".png"
-                text_out = "explanation: " + explanation + "\n Service connnections: " + service_connections + "\n Architecture requisites: " + arch_requisites
+                text_out = "explanation: " + explanation + "\n Service connections: " + service_connections + "\n Architecture requisites: " + arch_requisites
                 st.image(image_path, caption=str(image_path))
                 with open(image_path, "rb") as file:
                     st.download_button(

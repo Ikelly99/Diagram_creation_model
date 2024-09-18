@@ -26,6 +26,7 @@ load_dotenv()
 os.environ["OPENAI_API_TYPE"] = "openai"
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
+
 class Response_diagram(BaseModel):
     """Result topic query"""
     arch_requisites: Optional[str] = Field(..., description="technical requistions for the architecture")
@@ -41,7 +42,6 @@ class Response_diagram_improvements(BaseModel):
     python_diagram_runnable: Optional[str] = Field(...,description="the diagram architecture made into runnable code made with the python ""diagram"" package")
     explanation: Optional[str] = Field(..., description="Explanation of the Diagram architecture generated")
     service_connections: Optional[str] = Field(..., description="Explanation of the connections between the hyperscaler services")
-
 
 class LLM_Diagram:
     def __init__(self, question):
