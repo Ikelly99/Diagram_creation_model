@@ -29,8 +29,18 @@ def page_response(text_input:str, option:str):
         if allowed == "allowed":
             arch_requisites, python_diagram_runnable, explanation,\
             service_connections, image_file_name = LLM_Diagram(text_input, tech).diagram_first_answer()
-                
-            run_code_and_return_image(python_diagram_runnable, image_file_name)
+            flag = 0
+            while True:
+                try:    
+                    run_code_and_return_image(python_diagram_runnable, image_file_name)
+                except:
+                    arch_requisites, python_diagram_runnable, explanation,\
+                    service_connections, image_file_name = LLM_Diagram(text_input, tech).diagram_first_answer()
+                    flag += 1
+                    if flag == 3:
+                        break
+                else:
+                    break
 
             if image_file_name[-4:] == ".png":
                 image_path = image_file_name
