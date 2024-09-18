@@ -18,4 +18,4 @@ with col1:
 
 
 with col2:
-    st.write(f"You wrote {len(txt)} characters.")
+    st.write(f"You wrote  characters.")
