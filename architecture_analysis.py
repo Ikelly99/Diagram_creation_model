@@ -11,10 +11,15 @@ from image_analysis import LLM_DiagramAnalyzer
 from PIL import Image
 import PIL
 import os
+import dotenv
+from dotenv import load_dotenv
 
 text_out = ""
+
+os.environ["OPENAI_API_TYPE"] = "openai"
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 st.set_page_config(
-    page_title="Codd",
+    page_title="Architecture analysis",
     page_icon="🧊",
     layout="wide",
     initial_sidebar_state="collapsed")
@@ -28,13 +33,14 @@ with col1:
         if image_input is not None:
             file_details = {"FileName": image_input.name, "FileType": image_input.type}
             st.write(file_details)
-            st.image(image_input, height=250, width=250)
-            with open(os.path.join("tempDir", image_input.name), "wb") as f:
+            st.image(image_input)
+            print(image_input.name)
+            with open(os.path.join("uploaded_images", image_input.name), "wb") as f:
                 f.write(image_input.getbuffer())
             st.success("Saved File")
 
 
-with col2:
+with (((col2))):
     if buttom_check and text_input:
         text_input = text_input
         # perceptron layer
@@ -42,8 +48,12 @@ with col2:
         if analyze_prompt(text_input) == "Allowed" and cla == 1:
             topic, language, is_greeting, allowed = LLMConnect(text_input).connect_client_test()
             if allowed == "allowed":
-                analyzed_image = LLM_DiagramAnalyzer(r"uploaded_images\saved_image.jpg", text_input).diagram_analysis()
-                text_out = str(analyzed_image)
+                analyzed_image = LLM_DiagramAnalyzer(r"uploaded_images\saved_image.jpg", text_input)
+                components, service_connections, explanation, is_viable, Advantages_disadvantages = analyzed_image.diagram_analysis()
+                text_out = (f"Service connections: {service_connections}, \n"
+                            f"Explanation: {explanation}, \n"
+                            f"Viability: {is_viable},"
+                            f"Advantages and disadvantages: {Advantages_disadvantages}")
             else:
                 message = f" Your message was flagged as malicious: {cla}"
                 st.write(message)

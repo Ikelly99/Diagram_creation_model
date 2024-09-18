@@ -21,6 +21,7 @@ load_dotenv()
 
 os.environ["OPENAI_API_TYPE"] = "openai"
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+
 class LLM_DiagramAnalyzer:
     def __init__(self, image_path, question):
         self.image_path = image_path
@@ -68,7 +69,6 @@ class LLM_DiagramAnalyzer:
                 result.explanation,
                 result.is_viable,
                 result.Advantages_disadvantages)
-
 
 # Example usage
 if __name__ == "__main__":
