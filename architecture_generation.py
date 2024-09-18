@@ -15,6 +15,8 @@ load_dotenv()
 os.environ["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY")
 
 def page_response(tech:str, text_input:str, option:str, dic_tech: dict):
+    global text_out
+    
     text_input_user = text_input
     text_input = text_input + f", using only {option} services" + dic_tech[tech]
     
@@ -41,12 +43,12 @@ def page_response(tech:str, text_input:str, option:str, dic_tech: dict):
                 )
 
         else:
-            message = f" Your message was flagged as malicious: {cla}"
-            st.write(message)
+            text_out = f" Your message was flagged as malicious: {cla}"
+            st.write(text_out)
 
     else:
-        message = f"Your message was flagged as malicious: {cla}"
-        st.write(message)
+        text_out = f"Your message was flagged as malicious: {cla}"
+        st.write(text_out)
 
 st.set_page_config(
     page_title="Architecture generation",
@@ -54,8 +56,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed")
  
-global text_out
-
 text_out = ""
 
 col1, col2 = st.columns([1,1])
