@@ -20,7 +20,7 @@ from langchain_core.prompts import ChatPromptTemplate
 #from langchain.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.pydantic_v1 import BaseModel, Field
-
+from strings_azure_gcp.strings_azure_gcp import dic_tech
 load_dotenv()
 
 os.environ["OPENAI_API_TYPE"] = "openai"
@@ -44,18 +44,20 @@ class Response_diagram_improvements(BaseModel):
     service_connections: Optional[str] = Field(..., description="Explanation of the connections between the hyperscaler services")
 
 class LLM_Diagram:
-    def __init__(self, question):
+    def __init__(self, question, tech):
         self.question = question
+        self.tech = tech
     def diagram_first_answer(self):
         template = """you are a software architecture expert, you must create a diagram following the next indications {user_input}"
-             f"using the ""diagrams"" python package, the code should be runnable, correctly write the names and illustrations of the components in the generated code"""
+             f"using the ""diagrams"" python package""" + f",with the following documentation{dic_tech[self.tech]} the code should be runnable, correctly write the names and illustrations of the components in the generated code"
 
         apikey = os.getenv("OPENAI_API_KEY")
         prompt = ChatPromptTemplate.from_messages([("system", template,), ("human", "Question: {question}"), ])
         llm = ChatOpenAI(openai_api_key=apikey, model= "gpt-4o", temperature=0)
         chain = prompt | llm.with_structured_output(schema=Response_diagram)
-        print(self.question)
+#        print(self.question)
         diagram_answer = chain.invoke({"question": template, "user_input": self.question})
+        print(diagram_answer.python_diagram_runnable)
         return (diagram_answer.arch_requisites,
                 diagram_answer.python_diagram_runnable,
                 diagram_answer.explanation,
