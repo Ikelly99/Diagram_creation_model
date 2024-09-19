@@ -6,7 +6,7 @@ from input_validator import LLMConnect
 from class_model_diagram import LLM_Diagram
 from diagram_image_generation_test import run_code_and_return_image
 import regex_ban
-from perceptron import classiffier
+# from perceptron import classiffier
 from image_analysis import LLM_DiagramAnalyzer
 from PIL import Image
 import PIL
