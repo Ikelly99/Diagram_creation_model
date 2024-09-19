@@ -11,7 +11,7 @@ df = pd.DataFrame()
 #prompts = pd.read_csv("C:/Users/rlagunaj/Desktop/prompt_injection/prompt_db.csv")
 #prompts_1 = pd.read_csv("C:/Users/rlagunaj/Desktop/prompt_injection/prompt_db_1.csv")
 #prompts_2 = pd.read_csv("C:/Users/rlagunaj/Desktop/prompt_injection/prompt_db_2.csv").iloc[:,1:]
-prompts_2 = pd.read_csv(r"C:\Users\ikellyra\PycharmProjects\Diagram_creation_model\prompt_db.csv").iloc[:,1:]
+prompts_2 = None #pd.read_csv(r"C:\Users\ikellyra\PycharmProjects\Diagram_creation_model\prompt_db.csv").iloc[:,1:]
 np = ["What is the role of a software architect?",
     "Explain the differences between monolithic and microservices architecture.",
     "How does event-driven architecture work?",
@@ -138,44 +138,44 @@ bp = ["What is the capital of Italy?",
 #goodboys = list(prompts.iloc[:,1]) + list(prompts_1.iloc[:,2]) + list(prompts_2.iloc[:,1]) + np
 
 
-badboys = list(prompts_2.iloc[:,0]) + bp
-goodboys = list(prompts_2.iloc[:,1]) + np
+# badboys = list(prompts_2.iloc[:,0]) + bp
+# goodboys = list(prompts_2.iloc[:,1]) + np
 
-all_prompts = badboys+goodboys
-df["prompts"] = all_prompts
-df["class"] = df["prompts"].apply(lambda x: 0 if x in badboys else 1)
+# all_prompts = badboys+goodboys
+# df["prompts"] = all_prompts
+# df["class"] = df["prompts"].apply(lambda x: 0 if x in badboys else 1)
 
-df_model = df
-class_weights = {0: 3.0, 1: 1.0} #0 peor que 1
-perceptron = Perceptron(early_stopping=True, n_iter_no_change=5, class_weight= class_weights)
-X = df_model["prompts"]
+# df_model = df
+# class_weights = {0: 3.0, 1: 1.0} #0 peor que 1
+# perceptron = Perceptron(early_stopping=True, n_iter_no_change=5, class_weight= class_weights)
+# X = df_model["prompts"]
 vectorizer = CountVectorizer()
-X = vectorizer.fit_transform(X)
+# X = vectorizer.fit_transform(X)
 
 
-# train test split
-X_train, X_test, y_train, y_test = train_test_split(
-    X, df_model["class"], test_size=0.33, random_state=42)
+# # train test split
+# X_train, X_test, y_train, y_test = train_test_split(
+#     X, df_model["class"], test_size=0.33, random_state=42)
 
-perceptron.fit(X_train, y_train)
+# perceptron.fit(X_train, y_train)
 
-y_pred = perceptron.predict(X_test)
+# y_pred = perceptron.predict(X_test)
 
-# confusion matrix
-#print("confusion_matrix: \n",confusion_matrix(y_test, y_pred))
-#print(classification_report(y_test, y_pred))
+# # confusion matrix
+# #print("confusion_matrix: \n",confusion_matrix(y_test, y_pred))
+# #print(classification_report(y_test, y_pred))
 
 
-## Using cross validation
-#print("\n Cross validation \n")
-#kf = KFold(n_splits=5, shuffle=True, random_state=42)
-#cross_val_results = cross_val_score(perceptron, X, df_model["class"], cv=kf)
-#print(f'Cross-Validation Results (Accuracy): {cross_val_results}')
-#print(f'Mean Accuracy: {cross_val_results.mean()}')
+# ## Using cross validation
+# #print("\n Cross validation \n")
+# #kf = KFold(n_splits=5, shuffle=True, random_state=42)
+# #cross_val_results = cross_val_score(perceptron, X, df_model["class"], cv=kf)
+# #print(f'Cross-Validation Results (Accuracy): {cross_val_results}')
+# #print(f'Mean Accuracy: {cross_val_results.mean()}')
 
-### saving the model
-pickle.dump(perceptron, open("perceptron.sav", 'wb')) # Save the model for later use
-pickle.dump(vectorizer, open("vectorizer.pkl", 'wb')) # Save the model for later use
+# ### saving the model
+# pickle.dump(perceptron, open("perceptron.sav", 'wb')) # Save the model for later use
+# pickle.dump(vectorizer, open("vectorizer.pkl", 'wb')) # Save the model for later use
 
 def classiffier(new_data:List[str]) -> List[str]:
     """classifies one or more prompts from a list as good or bad
