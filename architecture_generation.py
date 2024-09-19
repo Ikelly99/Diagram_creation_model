@@ -35,10 +35,12 @@ with col1:
 
 with col2:
     if buttom_check and option == 'AWS' and text_input:
-        page_response(text_input=text_input, option="AWS")
+        response = page_response(text_input=text_input, option="AWS")
 
     elif buttom_check and option == 'GCP' and text_input:
-        page_response(text_input = text_input, option="GCP")
+        response = page_response(text_input = text_input, option="GCP")
 
     elif buttom_check and option == 'Azure' and text_input:
-        page_response(text_input = text_input, option = "Azure")
+        response = page_response(text_input = text_input, option = "Azure")
+
+st.write(response)
