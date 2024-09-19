@@ -33,6 +33,6 @@ def analyze_prompt(prompt: str) -> str:
     # Create a regex pattern to catch any of the banned words, case insensitive and ignoring word boundaries.
     pattern = re.compile(r'\b(?:' + '|'.join(map(re.escape, banned_words)) + r')\b', re.IGNORECASE)
     if pattern.search(prompt):
-        return "Banned"
+        return "banned"
     else:
-        return "Allowed"
+        return "allowed"

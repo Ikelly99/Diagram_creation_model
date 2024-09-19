@@ -5,7 +5,7 @@ from io import BytesIO
 from input_validator import LLMConnect
 from class_model_diagram import LLM_Diagram
 from diagram_image_generation_test import run_code_and_return_image
-from regex_ban import analyze_prompt
+import regex_ban
 from perceptron import classiffier
 from image_analysis import LLM_DiagramAnalyzer
 from PIL import Image
@@ -13,6 +13,7 @@ import PIL
 import os
 import dotenv
 from dotenv import load_dotenv
+from utils import filter
 
 text_out = ""
 
@@ -41,28 +42,28 @@ with col1:
             st.success("Saved File")
 
 
-with ((col2)):
+with (col2):
     if buttom_check and text_input:
-        cla = classiffier([text_input])
-        if analyze_prompt(text_input) == "Allowed" and cla == 1:
-            topic, language, is_greeting, allowed = LLMConnect(text_input).connect_client_test()
-            if allowed == "allowed":
-                components,service_connections,explanation,is_viable,Advantages_disadvantages = LLM_DiagramAnalyzer(
-                    os.path.join("uploaded_images", image_input.name), text_input).diagram_analysis()
-                text_out = f"""
-                            ### Components
-                            {components}
-                            
-                            ### Service connections
-                            {service_connections}
-                            
-                            ### Explanation
-                            {explanation}
-                            
-                            ### Is viable
-                            {is_viable}
-                            
-                            ### Advantages_disadvantages
-                            {Advantages_disadvantages}
-                            """
-        st.markdown(text_out)
+        filter_sum, str_filter = filter(text_input)
+        if filter_sum < 2:
+            st.write(f"Your text was flagged as malicious, {str_filter}")
+        else:
+            components,service_connections,explanation,is_viable,Advantages_disadvantages = LLM_DiagramAnalyzer(
+                os.path.join("uploaded_images", image_input.name), text_input).diagram_analysis()
+            text_out = f"""
+                        ### Components
+                        {components}
+                        
+                        ### Service connections
+                        {service_connections}
+                        
+                        ### Explanation
+                        {explanation}
+                        
+                        ### Is viable
+                        {is_viable}
+                        
+                        ### Advantages_disadvantages
+                        {Advantages_disadvantages}
+                        """
+            st.markdown(text_out)

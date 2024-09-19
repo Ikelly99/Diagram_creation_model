@@ -70,16 +70,5 @@ class LLM_DiagramAnalyzer:
                 result.is_viable,
                 result.Advantages_disadvantages)
 
-# Example usage
-if __name__ == "__main__":
-    diagram_analyzer = LLM_DiagramAnalyzer(image_path=r"C:\Users\ikellyra\PycharmProjects\Diagram_creation_model\generated_images\complex_web_architecture.png",
-                                           question="What are the main services in this architecture?")
 
-    components, service_connections, explanation, is_viable, Advantages_disadvantages = diagram_analyzer.diagram_analysis()
-
-    print(f"Components Identified: {components}")
-    print(f"Service Connections: {service_connections}")
-    print(f"Explanation: {explanation}")
-    print(f"is_viable: {is_viable}")
-    print(f"Advantages_disadvantages: {Advantages_disadvantages}")
 
