@@ -36,7 +36,7 @@ embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 def response_generator(user_input:str):
     input_validator_response = LLMConnect(user_input).connect_client_test()
     if (input_validator_response[-1]).lower() == "banned":
-        return """Hola soy QueryWise tu asistente de normas, mi objetivo es ofrecerte información acerca de temas de telecomunicaciones.
+        return """Hola soy Arquitecto de soluciones , mi objetivo es ofrecerte diagramas de arquitectura de datos.
         Pero no tengo permitido contestar este tipo de preguntas {}
         """.format(user_input)
     else:
