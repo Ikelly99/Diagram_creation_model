@@ -52,9 +52,9 @@ def page_response(text_input: str, option: str):
                 break
 
         image_path = image_file_name if image_file_name[-4:] == ".png" else str(image_file_name) + ".png"
-        
-        st.image(image_path, caption=str(image_path))
-        st.write(text_out)
+        try:
+            st.image(image_path, caption=str(image_path))
+        except: st.write("there was an error generating your image please try later")
 
         with open(image_path, "rb") as file:
             st.download_button(

@@ -21,8 +21,8 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed")
  
-text_out = ""
-
+response = ""
+text_out= ""
 col1, col2 = st.columns([1,1])
 
 with col1:
