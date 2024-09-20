@@ -4,7 +4,7 @@ from input_validator import LLMConnect
 import os
 from dotenv import load_dotenv
 from image_analysis import LLM_DiagramAnalyzer
-from class_model_diagram import LLM_Diagram
+from class_model_diagram import LLM_Diagram, final_answer
 import streamlit as st
 from diagram_image_generation_test import run_code_and_return_image
 
@@ -36,14 +36,14 @@ def page_response(text_input: str, option: str):
         st.write(f"Your text was flagged as malicious, {str_filter}")
     else:
         arch_requisites, python_diagram_runnable, explanation, \
-            service_connections, image_file_name = LLM_Diagram(text_input, tech).diagram_first_answer()
+            service_connections, image_file_name = final_answer(text_input, tech)
         flag = 0
         while True:
             try:
                 run_code_and_return_image(python_diagram_runnable, image_file_name)
             except:
                 arch_requisites, python_diagram_runnable, explanation, \
-                    service_connections, image_file_name = LLM_Diagram(text_input, tech).diagram_first_answer()
+                    service_connections, image_file_name = final_answer(text_input, tech)
                 flag += 1
                 if flag == 3:
                     st.write(f"We have a problem trying to make your diagram, plese try later")
