@@ -7,6 +7,7 @@ from image_analysis import LLM_DiagramAnalyzer
 from class_model_diagram import LLM_Diagram, final_answer
 import streamlit as st
 from diagram_image_generation_test import run_code_and_return_image
+from fun_temp_db import get_values
 
 
 load_dotenv()
@@ -64,5 +65,8 @@ def page_response(text_input: str, option: str):
                 mime="image/png")
             
         text_out = "explanation: " + explanation + "\n Service connections: " + service_connections + "\n Architecture requisites: " + arch_requisites
-
+        
+        with open(image_path, "rb") as file:
+            get_values(text_input, text_out, python_diagram_runnable, file)
+        
         return text_out
