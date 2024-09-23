@@ -1,7 +1,3 @@
-Here's an updated version of your README to reflect the two main features of the project:
-
----
-
 # Diagram Creation Model
 
 This project implements a Python-based model that uses **LangChain** and the **diagrams** package to generate and analyze visual diagrams from natural language descriptions and images. The model interprets user input, provides detailed explanations, and generates diagrams based on the provided input. The project is packaged in a Docker container for easy deployment.
