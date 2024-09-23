@@ -33,22 +33,35 @@ os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_CHAT_KEY_4")
 
 embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
-def response_generator(user_input:str):
+def response_generator(user_input: str):
+    """
+    Generates a response based on user input and input validation.
+
+    Parameters:
+    user_input (str): The input provided by the user.
+
+    Returns:
+    str: A response generated based on the validation of the input and the user's content.
+    """
     input_validator_response = LLMConnect(user_input).connect_client_test()
+    
+    # Verifica si la respuesta del validador de input contiene "banned"
     if (input_validator_response[-1]).lower() == "banned":
-        return """Hola soy Arquitecto de soluciones , mi objetivo es ofrecerte diagramas de arquitectura de datos.
+        return """Hola soy Arquitecto de soluciones, mi objetivo es ofrecerte diagramas de arquitectura de datos.
         Pero no tengo permitido contestar este tipo de preguntas {}
         """.format(user_input)
     else:
-        if input_validator_response[2] == "YES" or user_input==None:
+        # Si la respuesta del validador de input es "YES" o el input del usuario es None
+        if input_validator_response[2] == "YES" or user_input is None:
             response = task.greet_the_user(user_input)
             return response.content
-        else: # generate response
-            if index_books(user_question=user_input, tempetature_llm=0.1) == True:
+        else:
+            # Genera una respuesta
+            if index_books(user_question=user_input, temperature_llm=0.1):
                 response = first_response(user_input)
                 improved_response = task.improve_response(response[0].page_content,
-                                                        user_language= input_validator_response[1],
-                                                        aditional_question=user_input)
+                                                          user_language=input_validator_response[1],
+                                                          additional_question=user_input)
                 return improved_response.content
             else:
                 return """Hola en este momento no te puedo contestar {} porque no tengo información acerca de ese tema""".format(user_input)
