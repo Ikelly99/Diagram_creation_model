@@ -15,20 +15,39 @@ load_dotenv()
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 def filter(text_input):    
+    """
+    Filters text input to determine whether it is allowed or disallowed.
+
+    Parameters:
+    text_input (str): The text input provided by the user.
+
+    Returns:
+    tuple: A tuple containing the sum of the filters and a string containing the filter results.
+    """
     cla = classiffier([text_input])[0]
     analyze_prompt = regex_ban.analyze_prompt(text_input)
     topic, language, is_greeting, allowed = LLMConnect(text_input).connect_client_test()
     
     allowed = 1 if allowed == "allowed" else 0
-
-    analyze_prompt = 1  if analyze_prompt.lower() == "allowed" else 0
+    analyze_prompt = 1 if analyze_prompt.lower() == "allowed" else 0
 
     filter_sum = int(cla) + int(analyze_prompt) + int(allowed)
 
-    return filter_sum,  f"{allowed}, {analyze_prompt}, {cla}"
+    return filter_sum, f"{allowed}, {analyze_prompt}, {cla}"
+
 
 
 def page_response(text_input: str, option: str):
+    """
+    Generates a page response based on the text input and the selected option.
+
+    Parameters:
+    text_input (str): The text input provided by the user.
+    option (str): The selected technical option.
+
+    Returns:
+    str: A response generated based on the text input and the selected option.
+    """
     global text_out
     tech = option
     filter_sum, str_filter = filter(text_input)
@@ -47,7 +66,7 @@ def page_response(text_input: str, option: str):
                     service_connections, image_file_name = final_answer(text_input, tech)
                 flag += 1
                 if flag == 3:
-                    st.write(f"We have a problem trying to make your diagram, plese try later")
+                    st.write(f"We have a problem trying to make your diagram, please try later")
                     break
             else:
                 break
@@ -55,7 +74,8 @@ def page_response(text_input: str, option: str):
         image_path = image_file_name if image_file_name[-4:] == ".png" else str(image_file_name) + ".png"
         try:
             st.image(image_path, caption=str(image_path))
-        except: st.write("there was an error generating your image please try later")
+        except:
+            st.write("There was an error generating your image, please try later")
 
         with open(image_path, "rb") as file:
             st.download_button(
