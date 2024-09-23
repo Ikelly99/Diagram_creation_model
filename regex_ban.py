@@ -1,6 +1,15 @@
 import re
 
 def analyze_prompt(prompt: str) -> str:
+    """
+    Analyzes a prompt to determine if it contains prohibited words or phrases.
+
+    Parameters:
+    prompt (str): The prompt to be parsed.
+
+    Returns:
+    str: “banned” if the prompt contains banned words or phrases, otherwise “allowed”.
+    """
     banned_words = [
         # English words and phrases
         "Ignore", "Override", "Disregard", "Bypass", "Continue", "Forget previous instructions", "Stop restrictions",
@@ -8,11 +17,11 @@ def analyze_prompt(prompt: str) -> str:
         "You are", "In this scenario", "Imagine", "As a(n) [role]", "Instruct me like", "No restrictions",
         "Unrestricted", "Free mode", "Ignore safety", "I authorize", "No rules", "Unlocked", "For educational purposes",
         "Hypothetically", "No filters", "Forget the rules", "Override the filter", "For research purposes",
-        "Hypothetically speaking", "Let’s say", "What if", "How would you", "Just out of curiosity",
+        "Hypothetically speaking", "Lets say", "What if", "How would you", "Just out of curiosity",
         "To understand better",
         "Only for demonstration", "For learning purposes", "Reveal", "Unlock", "Hidden", "Show confidential", "Extract",
-        "Display", "Give me access", "Tell me the truth", "Could you kindly", "Please provide", "If it’s okay",
-        "I’m just curious", "In theory", "For example", "What would happen if",
+        "Display", "Give me access", "Tell me the truth", "Could you kindly", "Please provide", "If its okay",
+        "Im just curious", "In theory", "For example", "What would happen if",
 
         # Spanish words and phrases
         "Ignorar", "Anular", "Saltar", "Continuar", "Desactivar", "Olvidar instrucciones anteriores", "Omitir",
@@ -30,7 +39,7 @@ def analyze_prompt(prompt: str) -> str:
         "¿Qué pasaría si?"
     ]
 
-    # Create a regex pattern to catch any of the banned words, case insensitive and ignoring word boundaries.
+    # Create a regex pattern to detect any of the forbidden words
     pattern = re.compile(r'\b(?:' + '|'.join(map(re.escape, banned_words)) + r')\b', re.IGNORECASE)
     if pattern.search(prompt):
         return "banned"
