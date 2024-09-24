@@ -5,18 +5,25 @@ import numpy as np
 #import random as rd
 import collections
 import sys
+import os
+import sys
+import logging
+from langchain.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
+from langchain_core.pydantic_v1 import BaseModel, Field
+from typing import Optional
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 if sys.version_info.major == 3 and sys.version_info.minor >= 10:
     from collections.abc import MutableSet
     collections.MutableSet = collections.abc.MutableSet
     collections.MutableMapping = collections.abc.MutableMapping
 else:
     from collections import MutableSet, MutableMapping
-import os
-from langchain.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
-from dotenv import load_dotenv
-from langchain_core.pydantic_v1 import BaseModel, Field
-from typing import Optional
+
 load_dotenv()
 
 os.environ["OPENAI_API_TYPE"] = "openai"
@@ -49,6 +56,7 @@ class LLM_DiagramAnalyzer:
         """
         self.image_path = image_path
         self.question = question
+        logging.info(f"Initialized LLM_DiagramAnalyzer with image_path: {image_path} and question: {question}")
 
     def diagram_analysis(self):
         """
@@ -73,8 +81,10 @@ class LLM_DiagramAnalyzer:
             ("system", template),
             ("human", "Image: {image_path}, Question: {question}")
         ])
+        logging.info("Prompt template created.")
 
         llm = ChatOpenAI(openai_api_key=apikey, model="gpt-4", temperature=0)
+        logging.info("ChatOpenAI instance created.")
 
         # Definition of the output scheme for structuring responses
         class Image_ResponseDiagram(BaseModel):
@@ -83,15 +93,18 @@ class LLM_DiagramAnalyzer:
             explanation: Optional[str] = Field(..., description="Explicación detallada de todos los componentes presentados en la imagen")
             is_viable: Optional[str] = Field(..., description="Explicación detallada de por qué el diagrama podría ser viable o no viable")
             advantages_disadvantages: Optional[str] = Field(..., description="Lista detallada de ventajas y desventajas de la solución proporcionada")
+        logging.info("Image_ResponseDiagram schema defined.")
 
         # Linking the prompt template to the LLM and the structured output
         chain = prompt | llm.with_structured_output(schema=Image_ResponseDiagram)
+        logging.info("Prompt template linked to LLM with structured output.")
 
         # Pass image and query to the chain for processing
         result = chain.invoke({
             "image_path": self.image_path,
             "question": self.question
         })
+        logging.info("Diagram analysis completed.")
 
         return (result.components,
                 result.service_connections,
