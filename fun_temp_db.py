@@ -1,6 +1,10 @@
 from datetime import datetime
 import polars as pl
 import os
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def get_values(user_input, lang_response, lang_answer, image):
     """
@@ -19,6 +23,7 @@ def get_values(user_input, lang_response, lang_answer, image):
     """
     # Gets the absolute path to the CSV file where the data will be stored
     route = os.path.abspath(os.getcwd()) + r"\local_data\first_test.csv"
+    logging.info(f"CSV file path: {route}")
     
     # Creates a dictionary with the values provided and a timestamp
     values_dic = {
@@ -28,11 +33,14 @@ def get_values(user_input, lang_response, lang_answer, image):
         'diagram_code': lang_answer,
         'diagram_image': str(image)
     }
+    logging.info("Dictionary with values created.")
     
     # Converts the dictionary to a DataFrame
     df_new = pl.DataFrame(values_dic)
+    logging.info("Dictionary converted to DataFrame.")
     
     # Writes the DataFrame to a CSV file
     df_new.write_csv(route)
+    logging.info("DataFrame written to CSV file.")
     
     return "All working"
