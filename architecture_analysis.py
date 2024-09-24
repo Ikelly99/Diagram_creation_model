@@ -14,6 +14,7 @@ import os
 import dotenv
 from dotenv import load_dotenv
 from utils import filter
+import logging
 
 # Initialize output text variable
 text_out = ""
@@ -21,6 +22,9 @@ text_out = ""
 # Set environment variables for OpenAI API key and type
 os.environ["OPENAI_API_TYPE"] = "openai"
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Configure Streamlit page layout
 st.set_page_config(
@@ -50,27 +54,32 @@ with col1:
             file_details = {"FileName": image_input.name, "FileType": image_input.type}  # Gather file details
             st.write(file_details)  # Display file details
             st.image(image_input)  # Display uploaded image
-            print(image_input.name)  # Print the image name (optional debugging)
+            logging.info(f"Uploaded image: {image_input.name}")  # Log the image name
 
             # Save the uploaded image to the "uploaded_images" directory
             with open(os.path.join("uploaded_images", image_input.name), "wb") as f:
                 f.write(image_input.getbuffer())  # Save the file buffer to disk
             st.success("Saved File")  # Show success message
+            logging.info(f"Image {image_input.name} saved successfully.")  # Log image save success
 
 # Column 2: Processing and displaying the analysis results
 with col2:
     # If the user submits text input and the submit button is pressed
     if buttom_check and text_input:
+        logging.info("Submit button pressed and text input provided.")  # Log form submission
         # Apply a filtering function to check for malicious content in the text input
         filter_sum, str_filter = filter(text_input)
+        logging.info(f"Filter result: {filter_sum}, {str_filter}")  # Log filter results
 
         # If the filter detects potentially malicious content, show a warning message
         if filter_sum < 2:
             st.write(f"Your text was flagged as malicious, {str_filter}")
+            logging.warning(f"Text flagged as malicious: {str_filter}")  # Log malicious text detection
         else:
             # Analyze the diagram using the provided image and text description
             components, service_connections, explanation, is_viable, Advantages_disadvantages = LLM_DiagramAnalyzer(
                 os.path.join("uploaded_images", image_input.name), text_input).diagram_analysis()
+            logging.info("Diagram analysis completed.")  # Log analysis completion
 
             # Format the output into markdown with headings for various analysis sections
             text_out = f"""
@@ -91,3 +100,4 @@ with col2:
                         """
             # Display the formatted analysis results in the app
             st.markdown(text_out)
+            logging.info("Analysis results displayed.")  # Log display of results
