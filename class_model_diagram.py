@@ -23,6 +23,8 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.pydantic_v1 import BaseModel, Field
 from strings_azure_gcp.strings_azure_gcp import dic_tech
 load_dotenv()
+import logging
+
 
 os.environ["OPENAI_API_TYPE"] = "openai"
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
@@ -54,6 +56,7 @@ class LLM_Diagram:
         chain = prompt | llm.with_structured_output(schema=Response_diagram)
 #        print(self.question)
         diagram_answer = chain.invoke({"question": template, "user_input": self.question})
+        logging.info("Diagram first answer generated.")
         #print(diagram_answer.python_diagram_runnable)
         return (diagram_answer.arch_requisites,
                 diagram_answer.python_diagram_runnable,
@@ -88,6 +91,7 @@ class LLM_Diagram:
         chain = prompt | llm.with_structured_output(schema=Response_diagram_improvements)
         #print(self.question)
         diagram_answer = chain.invoke({"question": template, "user_input": self.question})
+        logging.info("Diagram improvement response generated.")
         return diagram_answer.Improvements, diagram_answer.python_diagram_runnable_improved
 
     def diagram_answer_improved(self, improvements, python_diagram_runnable_improved):
@@ -104,6 +108,7 @@ class LLM_Diagram:
         #        print(self.question)
         diagram_answer = chain.invoke({"question": template, "user_input": self.question})
         #print(diagram_answer.python_diagram_runnable)
+        logging.info("Improved diagram answer generated.")
         return (diagram_answer.arch_requisites,
                 diagram_answer.python_diagram_runnable,
                 diagram_answer.explanation,
@@ -118,7 +123,7 @@ def final_answer(user_input:str, tech:str):
     logging.info("llm_diagram: diagram_improve_response_reflexor")
     arch_requisites,python_diagram_runnable,explanation,service_connections,image_file_name = LLM_Diagram(
         user_input, tech).diagram_answer_improved(improvements, python_diagram_runnable_improved)
-
+    logging.info("LLM_Diagram: diagram_answer_improved executed.")
     return arch_requisites,python_diagram_runnable,explanation,service_connections,image_file_name
 
 
