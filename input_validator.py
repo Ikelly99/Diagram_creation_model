@@ -23,18 +23,25 @@ from langchain_core.pydantic_v1 import BaseModel, Field
 
 load_dotenv()
 os.environ["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY")
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class ResponseQuery(BaseModel):
     """Result topic query"""
     main_topic: Optional[str] = Field(..., description="Main topic of the user question")
     language: Optional[str] = Field(..., description="The language in which the user input was written, either ""ENGLISH"" or ""SPANISH""")
-    flag: Optional[str] = Field(...,description="Flag the question as banned, or as an allowed question")
+    flag: Optional[str] = Field(..., description="Flag the question as banned, or as an allowed question")
     greetings: Optional[str] = Field(..., description="Is the user question a greeting or salutation, answer with ""YES"" or ""NO""")
 
 class LLMConnect:
     os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+    logging.info("OpenAI API key set.")
+    
     def __init__(self, question):
         self.question = question
+        logging.info(f"LLMConnect initialized with question: {question}")
 
     def connect_client_test(self):
         """
@@ -114,20 +121,19 @@ class LLMConnect:
             ("system", _DEFAULT_TEMPLATE),
             ("human", "Question: {question}")
         ])
+        logging.info("Chat prompt template created.")
+
         os.environ["OPENAI_API_KEY"] = os.environ.get("OPENAI_API_KEY")
-        llm = ChatOpenAI(model = "gpt-3.5-turbo", temperature=0.1)
+        llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0.1)
+        logging.info("ChatOpenAI instance created.")
 
         # Crear la cadena de LLM
         chain = prompt | llm.with_structured_output(schema=ResponseQuery)
+        logging.info("LLM chain created.")
 
         # Invocar la cadena con la pregunta
         query = chain.invoke({"question": self.question})
-        
-        #print(query)
-        # if str.lower(query.flag) == "banned":
-        #     print("baneado___")
-        #     return "Disculpa, no tengo permitido responder esa pregunta."
-        # else:
-        #     print("permitido___")
-        
+        logging.info("LLM chain invoked with question.")
+
         return query.main_topic, query.language, query.greetings, query.flag
+
