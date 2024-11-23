@@ -42,35 +42,34 @@ with col1:
     # Form to capture user input (cloud platform selection and specifications)
     with st.form("Space_1"):
         # Dropdown menu for selecting a cloud platform (AWS, GCP, Azure)
-        option = st.selectbox("Select a cloud platform:", ("AWS", "GCP", "Azure"))
+        option = st.multiselect("Select cloud platforms:", ["AWS", "GCP", "Azure"])
+        if option is not None:
+            logging.info(f"Cloud platform selected: {option}")
+            option = []
+        else:
+            pass
+        option_open_source = st.multiselect("Select open-source cloud platforms:", ["K8S", "Openstack", "Elastic"])
+        if option_open_source is not None:
+            logging.info(f"Open-source Cloud platform selected: {option_open_source}")
+        else:
+            option_open_source = []
+            pass
+        option = option + option_open_source
         st.write("You selected:", option)  # Display selected cloud platform
         logging.info(f"Cloud platform selected: {option}")
-
         # Text area for entering the specifications (e.g., architecture description)
         text_input = st.text_area(label="Enter the specifications", height=60)
 
         # Submit button for the form
-        buttom_check = st.form_submit_button(label="Submit")
+        button_check = st.form_submit_button(label="Submit")
 
 # Column 2: Processing user input and generating the response based on cloud platform
 with col2:
     # Check if the submit button was clicked, the selected option is AWS, and text input is provided
-    if buttom_check and option == 'AWS' and text_input:
-        logging.info("Submit button pressed with AWS selected and text input provided.")
+    if button_check and option is not None and text_input:
+        logging.info(f"Submit button pressed with {option} selected and text input provided.")
         # Call page_response function for AWS-specific architecture generation
-        response = page_response(text_input=text_input, option="AWS")
-
-    # Check if the submit button was clicked, the selected option is GCP, and text input is provided
-    elif buttom_check and option == 'GCP' and text_input:
-        logging.info("Submit button pressed with GCP selected and text input provided.")
-        # Call page_response function for GCP-specific architecture generation
-        response = page_response(text_input=text_input, option="GCP")
-
-    # Check if the submit button was clicked, the selected option is Azure, and text input is provided
-    elif buttom_check and option == 'Azure' and text_input:
-        logging.info("Submit button pressed with Azure selected and text input provided.")
-        # Call page_response function for Azure-specific architecture generation
-        response = page_response(text_input=text_input, option="Azure")
+        response = page_response(text_input=text_input, option=option)
 
 # Display the generated response (diagram or architecture details)
 st.write(response)

@@ -46,9 +46,16 @@ class LLM_Diagram:
     def __init__(self, question, tech):
         self.question = question
         self.tech = tech
+    def get_documentation(self):
+        documentation = ""
+        for option in self.tech:
+            documentation += dic_tech[option]
+        return documentation
+
     def diagram_first_answer(self):
+        documentation = get_documentation(self)
         template = """you are a software architecture expert, you must create a diagram following the next indications {user_input}"
-             f"using the ""diagrams"" python package""" + f",with the following documentation{dic_tech[self.tech]} the code should be runnable, correctly write the names and illustrations of the components in the generated code"
+             f"using the ""diagrams"" python package""" + f",with the following documentation{documentation} the code should be runnable, correctly write the names and illustrations of the components in the generated code"
 
         apikey = os.getenv("OPENAI_API_KEY")
         prompt = ChatPromptTemplate.from_messages([("system", template,), ("human", "Question: {question}"), ])
@@ -65,9 +72,10 @@ class LLM_Diagram:
                 diagram_answer.image_file_name)
 
     def diagram_improve_response_reflexor(self, python_diagram_runnable, arch_requisites, service_connections, explanation):
+        documentation = get_documentation(self)
         template = f"""you are a software architecture expert, you are given python code to generate a diagram 
         f"using the ""diagrams"" python package, the code should be runnable, and comply with the client expectations, 
-        revise that the code is runnable and goes in accordance with the architecture {dic_tech[self.tech]},
+        revise that the code is runnable and goes in accordance with the architecture {documentation},
         diagram code: {python_diagram_runnable},
         explanation {explanation},{arch_requisites},{service_connections}""" + """
         the explanation is accurate and the client needs are met, client description: {user_input}, dont forget to add essential 
@@ -89,14 +97,14 @@ class LLM_Diagram:
         prompt = ChatPromptTemplate.from_messages([("system", template,), ("human", "Question: {question}"), ])
         llm = ChatOpenAI(openai_api_key=apikey, model= "gpt-4o", temperature=0)
         chain = prompt | llm.with_structured_output(schema=Response_diagram_improvements)
-        #print(self.question)
         diagram_answer = chain.invoke({"question": template, "user_input": self.question})
         logging.info("Diagram improvement response generated.")
         return diagram_answer.Improvements, diagram_answer.python_diagram_runnable_improved
 
     def diagram_answer_improved(self, improvements, python_diagram_runnable_improved):
+        documentation = get_documentation(self)
         template = """you are a software architecture expert, you must create a diagram following the next indications {user_input}"
-            f"using the ""diagrams"" python package""" + f",with the following documentation{dic_tech[self.tech]} " + """
+            f"using the ""diagrams"" python package""" + f",with the following documentation{documentation} " + """
             the code should be runnable, correctly write the names and illustrations of the components in the generated code""" + f"""
             Take into account the next improvement considerations {improvements}, and make improvements to this code {python_diagram_runnable_improved}
             """
@@ -114,7 +122,7 @@ class LLM_Diagram:
                 diagram_answer.explanation,
                 diagram_answer.service_connections,
                 diagram_answer.image_file_name)
-def final_answer(user_input:str, tech:str):
+def final_answer(user_input:str, tech):
     arch_requisites,python_diagram_runnable,explanation,service_connections,image_file_name = LLM_Diagram(user_input, tech).diagram_first_answer()
     logging.info("llm_diagram: diagram_first_answer")
     improvements, python_diagram_runnable_improved = LLM_Diagram(

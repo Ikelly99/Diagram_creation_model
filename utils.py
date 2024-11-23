@@ -46,13 +46,13 @@ def filter(text_input):
 
     return filter_sum, f"{allowed}, {analyze_prompt}, {cla}"
 
-def page_response(text_input: str, option: str):
+def page_response(text_input: str, option):
     """
     Generates a page response based on the text input and the selected option.
 
     Parameters:
     text_input (str): The text input provided by the user.
-    option (str): The selected technical option.
+    option: The selected technical option.
 
     Returns:
     str: A response generated based on the text input and the selected option.
