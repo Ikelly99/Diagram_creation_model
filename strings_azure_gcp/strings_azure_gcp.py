@@ -584,7 +584,7 @@ dic_tech = {
     'StorageGatewayVirtualTapeLibrarydiagrams.aws.storage.StorageGatewayVirtualTapeLibrary',
     'StorageGatewaydiagrams.aws.storage.StorageGateway',
     'Storagediagrams.aws.storage.Storage']""",
-"Azure": """please note the list of node classes of the gcp provider:
+"Azure": """please note the list of node classes of the azure provider:
         ['AnalysisServicesdiagrams.azure.analytics.AnalysisServices',
         'DataExplorerClustersdiagrams.azure.analytics.DataExplorerClusters',
         'DataFactoriesdiagrams.azure.analytics.DataFactories',
@@ -819,4 +819,282 @@ dic_tech = {
         'MediaServicesdiagrams.azure.web.MediaServices',
         'NotificationHubNamespacesdiagrams.azure.web.NotificationHubNamespaces',
         'Searchdiagrams.azure.web.Search',
-        'Signalrdiagrams.azure.web.Signalr']"""}
+        'Signalrdiagrams.azure.web.Signalr']""",
+        "K8S": """please note the list of node classes of the K8S (kuberneetes) provider:
+        [K8S,
+Node classes list of the k8s provider.
+k8s.chaos
+ChaosMeshdiagrams.k8s.chaos.ChaosMesh
+LitmusChaosdiagrams.k8s.chaos.LitmusChaos
+k8s.clusterconfig
+HPAdiagrams.k8s.clusterconfig.HPA, HorizontalPodAutoscaler (alias)
+Limitsdiagrams.k8s.clusterconfig.Limits, LimitRange (alias)
+Quotadiagrams.k8s.clusterconfig.Quota
+k8s.compute
+Cronjobdiagrams.k8s.compute.Cronjob
+Deploydiagrams.k8s.compute.Deploy, Deployment (alias)
+DSdiagrams.k8s.compute.DS, DaemonSet (alias)
+Jobdiagrams.k8s.compute.Job
+Poddiagrams.k8s.compute.Pod
+RSdiagrams.k8s.compute.RS, ReplicaSet (alias)
+STSdiagrams.k8s.compute.STS, StatefulSet (alias)
+k8s.controlplane
+APIdiagrams.k8s.controlplane.API, APIServer (alias)
+CCMdiagrams.k8s.controlplane.CCM
+CMdiagrams.k8s.controlplane.CM, ControllerManager (alias)
+KProxydiagrams.k8s.controlplane.KProxy, KubeProxy (alias)
+Kubeletdiagrams.k8s.controlplane.Kubelet
+Scheddiagrams.k8s.controlplane.Sched, Scheduler (alias)
+k8s.ecosystem
+ExternalDnsdiagrams.k8s.ecosystem.ExternalDns
+Helmdiagrams.k8s.ecosystem.Helm
+Krewdiagrams.k8s.ecosystem.Krew
+Kustomizediagrams.k8s.ecosystem.Kustomize
+k8s.group
+NSdiagrams.k8s.group.NS, Namespace (alias)
+k8s.infra
+ETCDdiagrams.k8s.infra.ETCD
+Masterdiagrams.k8s.infra.Master
+Nodediagrams.k8s.infra.Node
+k8s.network
+Epdiagrams.k8s.network.Ep, Endpoint (alias)
+Ingdiagrams.k8s.network.Ing, Ingress (alias)
+Netpoldiagrams.k8s.network.Netpol, NetworkPolicy (alias)
+SVCdiagrams.k8s.network.SVC, Service (alias)
+k8s.others
+CRDdiagrams.k8s.others.CRD
+PSPdiagrams.k8s.others.PSP
+k8s.podconfig
+CMdiagrams.k8s.podconfig.CM, ConfigMap (alias)
+Secretdiagrams.k8s.podconfig.Secret
+k8s.rbac
+CRolediagrams.k8s.rbac.CRole, ClusterRole (alias)
+CRBdiagrams.k8s.rbac.CRB, ClusterRoleBinding (alias
+Groupdiagrams.k8s.rbac.Group
+RBdiagrams.k8s.rbac.RB, RoleBinding (alias)
+Rolediagrams.k8s.rbac.Role
+SAdiagrams.k8s.rbac.SA, ServiceAccount (alias)
+Userdiagrams.k8s.rbac.User
+k8s.storage
+PVdiagrams.k8s.storage.PV, PersistentVolume (alias)
+PVCdiagrams.k8s.storage.PVC, PersistentVolumeClaim (alias)
+SCdiagrams.k8s.storage.SC, StorageClass (alias)
+Voldiagrams.k8s.storage.Vol, Volume (alias)]""",
+"openstack": """please note the list of node classes of the Openstack provider:
+[openstack.apiproxies,
+EC2APIdiagrams.openstack.apiproxies.EC2API,
+
+openstack.applicationlifecycle,
+Freezerdiagrams.openstack.applicationlifecycle.Freezer,
+
+Masakaridiagrams.openstack.applicationlifecycle.Masakari,
+
+Muranodiagrams.openstack.applicationlifecycle.Murano,
+
+Solumdiagrams.openstack.applicationlifecycle.Solum,
+
+openstack.baremetal,
+Cyborgdiagrams.openstack.baremetal.Cyborg,
+
+Ironicdiagrams.openstack.baremetal.Ironic,
+
+openstack.billing,
+Cloudkittydiagrams.openstack.billing.Cloudkitty, CloudKitty (alias),
+
+openstack.compute,
+Novadiagrams.openstack.compute.Nova,
+
+Qinlingdiagrams.openstack.compute.Qinling,
+
+Zundiagrams.openstack.compute.Zun,
+
+openstack.containerservices,
+Kuryrdiagrams.openstack.containerservices.Kuryr,
+
+openstack.deployment,
+Ansiblediagrams.openstack.deployment.Ansible,
+
+Charmsdiagrams.openstack.deployment.Charms,
+
+Chefdiagrams.openstack.deployment.Chef,
+
+Helmdiagrams.openstack.deployment.Helm,
+
+Kolladiagrams.openstack.deployment.Kolla, KollaAnsible (alias),
+
+Tripleodiagrams.openstack.deployment.Tripleo, TripleO (alias),
+
+openstack.frontend,
+Horizondiagrams.openstack.frontend.Horizon,
+
+openstack.monitoring,
+Monascadiagrams.openstack.monitoring.Monasca,
+
+Telemetrydiagrams.openstack.monitoring.Telemetry,
+
+openstack.multiregion,
+Tricirclediagrams.openstack.multiregion.Tricircle,
+
+openstack.networking,
+Designatediagrams.openstack.networking.Designate,
+
+Neutrondiagrams.openstack.networking.Neutron,
+
+Octaviadiagrams.openstack.networking.Octavia,
+
+openstack.nfv,
+Tackerdiagrams.openstack.nfv.Tacker,
+
+openstack.optimization,
+Congressdiagrams.openstack.optimization.Congress,
+
+Rallydiagrams.openstack.optimization.Rally,
+
+Vitragediagrams.openstack.optimization.Vitrage,
+
+Watcherdiagrams.openstack.optimization.Watcher,
+
+openstack.orchestration,
+Blazardiagrams.openstack.orchestration.Blazar,
+
+Heatdiagrams.openstack.orchestration.Heat,
+
+Mistraldiagrams.openstack.orchestration.Mistral,
+
+Senlindiagrams.openstack.orchestration.Senlin,
+
+Zaqardiagrams.openstack.orchestration.Zaqar,
+
+openstack.packaging,
+LOCIdiagrams.openstack.packaging.LOCI,
+
+Puppetdiagrams.openstack.packaging.Puppet,
+
+RPMdiagrams.openstack.packaging.RPM,
+
+openstack.sharedservices,
+Barbicandiagrams.openstack.sharedservices.Barbican,
+
+Glancediagrams.openstack.sharedservices.Glance,
+
+Karbordiagrams.openstack.sharedservices.Karbor,
+
+Keystonediagrams.openstack.sharedservices.Keystone,
+
+Searchlightdiagrams.openstack.sharedservices.Searchlight,
+
+openstack.storage,
+Cinderdiagrams.openstack.storage.Cinder,
+
+Maniladiagrams.openstack.storage.Manila,
+
+Swiftdiagrams.openstack.storage.Swift,
+
+openstack.user,
+Openstackclientdiagrams.openstack.user.Openstackclient, OpenStackClient (alias),
+
+openstack.workloadprovisioning,
+Magnumdiagrams.openstack.workloadprovisioning.Magnum,
+
+Saharadiagrams.openstack.workloadprovisioning.Sahara,
+
+Trovediagrams.openstack.workloadprovisioning.Trove,
+]""",
+"Elastic": """please note the list of node classes of the Elastic provider:
+[elastic.agent,
+Agentdiagrams.elastic.agent.Agent,
+
+Endpointdiagrams.elastic.agent.Endpoint,
+
+Fleetdiagrams.elastic.agent.Fleet,
+
+Integrationsdiagrams.elastic.agent.Integrations,
+
+elastic.beats,
+APMdiagrams.elastic.beats.APM,
+
+Auditbeatdiagrams.elastic.beats.Auditbeat,
+
+Filebeatdiagrams.elastic.beats.Filebeat,
+
+Functionbeatdiagrams.elastic.beats.Functionbeat,
+
+Heartbeatdiagrams.elastic.beats.Heartbeat,
+
+Metricbeatdiagrams.elastic.beats.Metricbeat,
+
+Packetbeatdiagrams.elastic.beats.Packetbeat,
+
+Winlogbeatdiagrams.elastic.beats.Winlogbeat,
+
+elastic.elasticsearch,
+Alertingdiagrams.elastic.elasticsearch.Alerting,
+
+Beatsdiagrams.elastic.elasticsearch.Beats,
+
+Elasticsearchdiagrams.elastic.elasticsearch.Elasticsearch, ElasticSearch (alias),
+
+Kibanadiagrams.elastic.elasticsearch.Kibana,
+
+LogstashPipelinediagrams.elastic.elasticsearch.LogstashPipeline,
+
+Logstashdiagrams.elastic.elasticsearch.Logstash, LogStash (alias),
+
+MachineLearningdiagrams.elastic.elasticsearch.MachineLearning, ML (alias),
+
+MapServicesdiagrams.elastic.elasticsearch.MapServices,
+
+Mapsdiagrams.elastic.elasticsearch.Maps,
+
+Monitoringdiagrams.elastic.elasticsearch.Monitoring,
+
+SearchableSnapshotsdiagrams.elastic.elasticsearch.SearchableSnapshots,
+
+SecuritySettingsdiagrams.elastic.elasticsearch.SecuritySettings,
+
+SQLdiagrams.elastic.elasticsearch.SQL,
+
+Stackdiagrams.elastic.elasticsearch.Stack,
+
+elastic.enterprisesearch,
+AppSearchdiagrams.elastic.enterprisesearch.AppSearch,
+
+Crawlerdiagrams.elastic.enterprisesearch.Crawler,
+
+EnterpriseSearchdiagrams.elastic.enterprisesearch.EnterpriseSearch,
+
+SiteSearchdiagrams.elastic.enterprisesearch.SiteSearch,
+
+WorkplaceSearchdiagrams.elastic.enterprisesearch.WorkplaceSearch,
+
+elastic.observability,
+APMdiagrams.elastic.observability.APM,
+
+Logsdiagrams.elastic.observability.Logs,
+
+Metricsdiagrams.elastic.observability.Metrics,
+
+Observabilitydiagrams.elastic.observability.Observability,
+
+Uptimediagrams.elastic.observability.Uptime,
+
+elastic.orchestration,
+ECEdiagrams.elastic.orchestration.ECE,
+
+ECKdiagrams.elastic.orchestration.ECK,
+
+elastic.saas,
+Clouddiagrams.elastic.saas.Cloud,
+
+Elasticdiagrams.elastic.saas.Elastic,
+
+elastic.security,
+Endpointdiagrams.elastic.security.Endpoint,
+
+Securitydiagrams.elastic.security.Security,
+
+SIEMdiagrams.elastic.security.SIEM,
+
+Xdrdiagrams.elastic.security.Xdr,
+]"""
+}

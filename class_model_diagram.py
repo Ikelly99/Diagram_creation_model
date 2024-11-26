@@ -53,7 +53,7 @@ class LLM_Diagram:
         return documentation
 
     def diagram_first_answer(self):
-        documentation = get_documentation(self)
+        documentation = self.get_documentation()
         template = """you are a software architecture expert, you must create a diagram following the next indications {user_input}"
              f"using the ""diagrams"" python package""" + f",with the following documentation{documentation} the code should be runnable, correctly write the names and illustrations of the components in the generated code"
 
@@ -72,7 +72,7 @@ class LLM_Diagram:
                 diagram_answer.image_file_name)
 
     def diagram_improve_response_reflexor(self, python_diagram_runnable, arch_requisites, service_connections, explanation):
-        documentation = get_documentation(self)
+        documentation = self.get_documentation()
         template = f"""you are a software architecture expert, you are given python code to generate a diagram 
         f"using the ""diagrams"" python package, the code should be runnable, and comply with the client expectations, 
         revise that the code is runnable and goes in accordance with the architecture {documentation},
@@ -102,7 +102,7 @@ class LLM_Diagram:
         return diagram_answer.Improvements, diagram_answer.python_diagram_runnable_improved
 
     def diagram_answer_improved(self, improvements, python_diagram_runnable_improved):
-        documentation = get_documentation(self)
+        documentation = self.get_documentation()
         template = """you are a software architecture expert, you must create a diagram following the next indications {user_input}"
             f"using the ""diagrams"" python package""" + f",with the following documentation{documentation} " + """
             the code should be runnable, correctly write the names and illustrations of the components in the generated code""" + f"""

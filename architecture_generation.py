@@ -45,8 +45,8 @@ with col1:
         option = st.multiselect("Select cloud platforms:", ["AWS", "GCP", "Azure"])
         if option is not None:
             logging.info(f"Cloud platform selected: {option}")
-            option = []
         else:
+            option = []
             pass
         option_open_source = st.multiselect("Select open-source cloud platforms:", ["K8S", "Openstack", "Elastic"])
         if option_open_source is not None:
@@ -55,7 +55,7 @@ with col1:
             option_open_source = []
             pass
         option = option + option_open_source
-        st.write("You selected:", option)  # Display selected cloud platform
+        st.write("You selected:", str(option) + str(option_open_source))  # Display selected cloud platform
         logging.info(f"Cloud platform selected: {option}")
         # Text area for entering the specifications (e.g., architecture description)
         text_input = st.text_area(label="Enter the specifications", height=60)
