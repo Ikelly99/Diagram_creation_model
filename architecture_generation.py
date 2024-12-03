@@ -41,6 +41,9 @@ col1, col2 = st.columns([1, 1])
 with col1:
     # Form to capture user input (cloud platform selection and specifications)
     with st.form("Space_1"):
+        # Text area for entering the specifications (e.g., architecture description)
+        text_input = st.text_area(label="Enter the specifications", height=60)
+
         # Dropdown menu for selecting a cloud platform (AWS, GCP, Azure)
         option = st.multiselect("Select cloud platforms:", ["AWS", "GCP", "Azure"])
         if option is not None:
@@ -55,10 +58,8 @@ with col1:
             option_open_source = []
             pass
         option = option + option_open_source
-        st.write("You selected:", str(option) + str(option_open_source))  # Display selected cloud platform
+        st.write("You selected:", str(option))  # Display selected cloud platform
         logging.info(f"Cloud platform selected: {option}")
-        # Text area for entering the specifications (e.g., architecture description)
-        text_input = st.text_area(label="Enter the specifications", height=60)
 
         # Submit button for the form
         button_check = st.form_submit_button(label="Submit")

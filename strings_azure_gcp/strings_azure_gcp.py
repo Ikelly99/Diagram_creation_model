@@ -880,7 +880,7 @@ PVdiagrams.k8s.storage.PV, PersistentVolume (alias)
 PVCdiagrams.k8s.storage.PVC, PersistentVolumeClaim (alias)
 SCdiagrams.k8s.storage.SC, StorageClass (alias)
 Voldiagrams.k8s.storage.Vol, Volume (alias)]""",
-"openstack": """please note the list of node classes of the Openstack provider:
+"Openstack": """please note the list of node classes of the Openstack provider:
 [openstack.apiproxies,
 EC2APIdiagrams.openstack.apiproxies.EC2API,
 
